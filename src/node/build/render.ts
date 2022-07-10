@@ -6,7 +6,7 @@ import { normalizePath, transformWithEsbuild } from 'vite'
 import { RollupOutput, OutputChunk, OutputAsset } from 'rollup'
 import { HeadConfig, PageData, createTitle, notFoundPageData } from '../shared'
 import { slash } from '../utils/slash'
-import { SiteConfig, resolveSiteDataByRoute } from '../config'
+import { SiteConfig } from '../config'
 
 export async function renderPage(
   config: SiteConfig,
@@ -21,7 +21,7 @@ export async function renderPage(
   const { createApp } = await import(pathToFileURL(entryPath).toString())
   const { app, router } = createApp()
   const routePath = `/${page.replace(/\.md$/, '')}`
-  const siteData = resolveSiteDataByRoute(config.site, routePath)
+  const siteData = config.site
   await router.go(routePath)
 
   // render page

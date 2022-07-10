@@ -52,7 +52,7 @@ function load() {
 
 <template>
   <div v-if="theme.algolia" class="VPNavBarSearch">
-    <VPAlgoliaSearchBox v-if="loaded" />
+    <VPAlgoliaSearchBox v-if="loaded" :algolia="theme.algolia" />
 
     <div v-else id="docsearch" @click="load">
       <button
@@ -76,7 +76,9 @@ function load() {
               stroke-linejoin="round"
             />
           </svg>
-          <span class="DocSearch-Button-Placeholder">{{ theme.algolia?.buttonText || 'Search' }}</span>
+          <span class="DocSearch-Button-Placeholder">{{
+            theme.algolia?.buttonText || 'Search'
+          }}</span>
         </span>
         <span class="DocSearch-Button-Keys">
           <kbd class="DocSearch-Button-Key" ref="metaKey">Meta</kbd>

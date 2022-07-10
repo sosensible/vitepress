@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import type { DefaultTheme } from 'vitepress/theme'
 import { defineAsyncComponent } from 'vue'
 
-const VPCarbonAds = __ALGOLIA__
+const props = defineProps<{
+  carbonAds: DefaultTheme.CarbonAdsOptions
+}>()
+
+const VPCarbonAds = __CARBON__
   ? defineAsyncComponent(() => import('./VPCarbonAds.vue'))
   : () => null
 </script>
 
 <template>
   <div class="VPDocAsideCarbonAds">
-    <VPCarbonAds />
+    <VPCarbonAds :carbonAds="props" />
   </div>
 </template>

@@ -30,12 +30,16 @@ function handleClick({ target: el }: Event) {
 </script>
 
 <template>
-  <div class="VPDocAsideOutline" :class="{ 'has-outline': hasOutline }" ref="container">
+  <div
+    class="VPDocAsideOutline"
+    :class="{ 'has-outline': hasOutline }"
+    ref="container"
+  >
     <div class="content">
       <div class="outline-marker" ref="marker" />
 
       <div class="outline-title">
-        {{ theme.outlineTitle || 'On this page' }}
+        {{ theme.translations?.outlineTitle || 'On this page' }}
       </div>
 
       <nav aria-labelledby="doc-outline-aria-label">
@@ -53,7 +57,11 @@ function handleClick({ target: el }: Event) {
             </a>
             <ul v-if="children && frontmatter.outline === 'deep'">
               <li v-for="{ text, link, hidden } in children" v-show="!hidden">
-                <a class="outline-link nested" :href="link" @click="handleClick">
+                <a
+                  class="outline-link nested"
+                  :href="link"
+                  @click="handleClick"
+                >
                   {{ text }}
                 </a>
               </li>
@@ -91,7 +99,8 @@ function handleClick({ target: el }: Event) {
   width: 1px;
   height: 18px;
   background-color: var(--vp-c-brand);
-  transition: top 0.25s cubic-bezier(0, 1, 0.5, 1), background-color 0.5s, opacity 0.25s;
+  transition: top 0.25s cubic-bezier(0, 1, 0.5, 1), background-color 0.5s,
+    opacity 0.25s;
 }
 
 .outline-title {

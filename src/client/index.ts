@@ -7,13 +7,7 @@ export type { VitePressData } from './app/data'
 // theme types
 export type { Theme, EnhanceAppContext } from './app/theme'
 // shared types
-export type {
-  PageData,
-  SiteData,
-  HeadConfig,
-  Header,
-  LocaleConfig
-} from '../../types/shared'
+export type { PageData, SiteData, HeadConfig, Header } from '../../types/shared'
 
 // composables
 export { useData } from './app/data'

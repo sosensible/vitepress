@@ -13,17 +13,13 @@ import { Options as VuePluginOptions } from '@vitejs/plugin-vue'
 import {
   SiteData,
   HeadConfig,
-  LocaleConfig,
   DefaultTheme,
   APPEARANCE_KEY,
-  createLangDictionary,
   CleanUrlsMode
 } from './shared'
 import { resolveAliases, DEFAULT_THEME_PATH } from './alias'
 import { MarkdownOptions } from './markdown/markdown'
 import _debug from 'debug'
-
-export { resolveSiteDataByRoute } from './shared'
 
 const debug = _debug('vitepress:config')
 
@@ -37,7 +33,6 @@ export interface UserConfig<ThemeConfig = any> {
   head?: HeadConfig[]
   appearance?: boolean
   themeConfig?: ThemeConfig
-  locales?: Record<string, LocaleConfig>
   markdown?: MarkdownOptions
   lastUpdated?: boolean
   /**
@@ -287,8 +282,6 @@ export async function resolveSiteData(
     head: resolveSiteDataHead(userConfig),
     appearance: userConfig.appearance ?? true,
     themeConfig: userConfig.themeConfig || {},
-    locales: userConfig.locales || {},
-    langs: createLangDictionary(userConfig),
     scrollOffset: userConfig.scrollOffset || 90,
     cleanUrls: userConfig.cleanUrls || 'disabled'
   }

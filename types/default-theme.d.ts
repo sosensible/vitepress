@@ -14,13 +14,6 @@ export namespace DefaultTheme {
     siteTitle?: string | false
 
     /**
-     * Custom outline title in the aside component.
-     *
-     * @default 'On this page'
-     */
-    outlineTitle?: string
-
-    /**
      * The nav items.
      */
     nav?: NavItem[]
@@ -35,18 +28,6 @@ export namespace DefaultTheme {
      * be disabled.
      */
     editLink?: EditLink
-
-    /**
-     * Set custom last updated text.
-     *
-     * @default 'Last updated'
-     */
-    lastUpdatedText?: string
-
-    /**
-     * Set custom prev/next labels.
-     */
-    docFooter?: DocFooter
 
     /**
      * The social links to be displayed at the end of the nav bar. Perfect for
@@ -74,6 +55,48 @@ export namespace DefaultTheme {
      * The carbon ads options. Leave it undefined to disable the ads feature.
      */
     carbonAds?: CarbonAdsOptions
+
+    /**
+     * Custom labels
+     */
+    translations?: {
+      /**
+       * @default 'On this page'
+       */
+      outlineTitle?: string
+
+      /**
+       * @default 'Last updated'
+       */
+      lastUpdatedText?: string
+
+      docFooter?: {
+        /**
+         * @default 'Previous page'
+         */
+        prev?: string
+
+        /**
+         * @default 'Next page'
+         */
+        next?: string
+      }
+
+      /**
+       * @default 'Appearance'
+       */
+      darkModeSwitchLabel?: string
+
+      /**
+       * @default 'Menu'
+       */
+      sidebarMenuLabel?: string
+
+      /**
+       * @default 'Return to top'
+       */
+      returnToTopLabel?: string
+    }
   }
 
   // nav -----------------------------------------------------------------------
@@ -160,24 +183,6 @@ export namespace DefaultTheme {
      * @default 'Edit this page'
      */
     text?: string
-  }
-
-  // prev-next -----------------------------------------------------------------
-
-  export interface DocFooter {
-    /**
-     * Custom label for previous page button.
-     *
-     * @default 'Previous page'
-     */
-    prev?: string
-
-    /**
-     * Custom label for next page button.
-     *
-     * @default 'Next page'
-     */
-    next?: string
   }
 
   // social link ---------------------------------------------------------------

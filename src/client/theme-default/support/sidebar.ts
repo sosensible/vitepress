@@ -8,7 +8,7 @@ import { ensureStartingSlash } from './utils'
  * return empty array.
  */
 export function getSidebar(
-  sidebar: DefaultTheme.Sidebar,
+  sidebar: DefaultTheme.Sidebar | undefined,
   path: string
 ): DefaultTheme.SidebarGroup[] {
   if (Array.isArray(sidebar)) {
