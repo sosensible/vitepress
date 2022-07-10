@@ -2,7 +2,7 @@ import { watchEffect, Ref } from 'vue'
 import { HeadConfig, SiteData, createTitle } from '../../shared'
 import { Route } from '../router'
 
-export function useUpdateHead(route: Route, siteDataByRouteRef: Ref<SiteData>) {
+export function useUpdateHead(route: Route, siteDataRef: Ref<SiteData>) {
   let managedHeadTags: HTMLElement[] = []
   let isFirstUpdate = true
 
@@ -55,7 +55,7 @@ export function useUpdateHead(route: Route, siteDataByRouteRef: Ref<SiteData>) {
 
   watchEffect(() => {
     const pageData = route.data
-    const siteData = siteDataByRouteRef.value
+    const siteData = siteDataRef.value
     const pageDescription = pageData && pageData.description
     const frontmatterHead = pageData && pageData.frontmatter.head
 

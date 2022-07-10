@@ -9,7 +9,7 @@ export type {
   PageDataPayload,
   CleanUrlsMode,
   LocaleConfig,
-  LocaleSpecificUserConfig
+  LocaleSpecificConfig
 } from '../../types/shared'
 
 export const EXTERNAL_URL_RE = /^[a-z]+:/i

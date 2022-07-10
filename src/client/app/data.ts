@@ -41,7 +41,6 @@ export function initData(route: Route): VitePressData {
     page: computed(() => route.data),
     frontmatter: computed(() => route.data.frontmatter),
     lang: computed(() => site.value.lang),
-
     title: computed(() => {
       return createTitle(site.value, route.data)
     }),

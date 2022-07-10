@@ -17,7 +17,7 @@ import {
   APPEARANCE_KEY,
   CleanUrlsMode,
   LocaleConfig,
-  LocaleSpecificUserConfig
+  LocaleSpecificConfig
 } from './shared'
 import { resolveAliases, DEFAULT_THEME_PATH } from './alias'
 import { MarkdownOptions } from './markdown/markdown'
@@ -26,7 +26,7 @@ import _debug from 'debug'
 const debug = _debug('vitepress:config')
 
 export interface UserConfig<ThemeConfig = any>
-  extends LocaleSpecificUserConfig<ThemeConfig> {
+  extends LocaleSpecificConfig<ThemeConfig> {
   extends?: RawConfigExports<ThemeConfig>
 
   base?: string
@@ -287,7 +287,8 @@ export async function resolveSiteData(
     appearance: userConfig.appearance ?? true,
     themeConfig: userConfig.themeConfig || {},
     scrollOffset: userConfig.scrollOffset || 90,
-    cleanUrls: userConfig.cleanUrls || 'disabled'
+    cleanUrls: userConfig.cleanUrls || 'disabled',
+    locales: userConfig.locales || {}
   }
 }
 

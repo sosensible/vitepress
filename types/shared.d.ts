@@ -28,14 +28,7 @@ export type CleanUrlsMode =
 export interface SiteData<ThemeConfig = any> {
   base: string
   cleanUrls?: CleanUrlsMode
-
-  /**
-   * Language of the site as it should be set on the `html` element.
-   *
-   * @example `en-US`, `zh-CN`
-   */
   lang: string
-
   title: string
   titleTemplate?: string | boolean
   description: string
@@ -43,6 +36,7 @@ export interface SiteData<ThemeConfig = any> {
   appearance: boolean
   themeConfig: ThemeConfig
   scrollOffset: number | string
+  locales: LocaleConfig<ThemeConfig>
 }
 
 export type HeadConfig =
@@ -54,7 +48,7 @@ export interface PageDataPayload {
   pageData: PageData
 }
 
-export interface LocaleSpecificUserConfig<ThemeConfig = any> {
+export interface LocaleSpecificConfig<ThemeConfig = any> {
   lang?: string
   title?: string
   titleTemplate?: string | boolean
@@ -65,5 +59,5 @@ export interface LocaleSpecificUserConfig<ThemeConfig = any> {
 
 export type LocaleConfig<ThemeConfig = any> = Record<
   string,
-  LocaleSpecificUserConfig<ThemeConfig>
+  LocaleSpecificConfig<ThemeConfig> & { label: string }
 >

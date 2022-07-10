@@ -40,13 +40,6 @@ export namespace DefaultTheme {
      */
     footer?: Footer
 
-    // TODO: remove this
-    /**
-     * Adds locale menu to the nav. This option should be used when you have
-     * your translated sites outside of the project.
-     */
-    localeLinks?: LocaleLinks
-
     /**
      * The algolia options. Leave it undefined to disable the search feature.
      */
@@ -221,18 +214,6 @@ export namespace DefaultTheme {
     desc?: string
     links?: SocialLink[]
     sponsor?: string
-  }
-
-  // locales -------------------------------------------------------------------
-
-  export interface LocaleLinks {
-    text: string
-    items: LocaleLink[]
-  }
-
-  export interface LocaleLink {
-    text: string
-    link: string
   }
 
   // algolia ------------------------------------------------------------------
