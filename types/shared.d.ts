@@ -53,3 +53,17 @@ export interface PageDataPayload {
   path: string
   pageData: PageData
 }
+
+export interface LocaleSpecificUserConfig<ThemeConfig = any> {
+  lang?: string
+  title?: string
+  titleTemplate?: string | boolean
+  description?: string
+  head?: HeadConfig[]
+  themeConfig?: ThemeConfig
+}
+
+export type LocaleConfig<ThemeConfig = any> = Record<
+  string,
+  LocaleSpecificUserConfig<ThemeConfig>
+>

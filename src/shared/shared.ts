@@ -7,7 +7,9 @@ export type {
   Header,
   DefaultTheme,
   PageDataPayload,
-  CleanUrlsMode
+  CleanUrlsMode,
+  LocaleConfig,
+  LocaleSpecificUserConfig
 } from '../../types/shared'
 
 export const EXTERNAL_URL_RE = /^[a-z]+:/i

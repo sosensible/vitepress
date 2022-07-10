@@ -40,6 +40,7 @@ export namespace DefaultTheme {
      */
     footer?: Footer
 
+    // TODO: remove this
     /**
      * Adds locale menu to the nav. This option should be used when you have
      * your translated sites outside of the project.

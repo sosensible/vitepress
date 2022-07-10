@@ -15,7 +15,9 @@ import {
   HeadConfig,
   DefaultTheme,
   APPEARANCE_KEY,
-  CleanUrlsMode
+  CleanUrlsMode,
+  LocaleConfig,
+  LocaleSpecificUserConfig
 } from './shared'
 import { resolveAliases, DEFAULT_THEME_PATH } from './alias'
 import { MarkdownOptions } from './markdown/markdown'
@@ -23,18 +25,25 @@ import _debug from 'debug'
 
 const debug = _debug('vitepress:config')
 
-export interface UserConfig<ThemeConfig = any> {
+export interface UserConfig<ThemeConfig = any>
+  extends LocaleSpecificUserConfig<ThemeConfig> {
   extends?: RawConfigExports<ThemeConfig>
+
   base?: string
-  lang?: string
-  title?: string
-  titleTemplate?: string | boolean
-  description?: string
-  head?: HeadConfig[]
+  srcDir?: string
+  srcExclude?: string[]
+  outDir?: string
+  shouldPreload?: (link: string, page: string) => boolean
+
+  locales?: LocaleConfig<ThemeConfig>
+
   appearance?: boolean
-  themeConfig?: ThemeConfig
-  markdown?: MarkdownOptions
   lastUpdated?: boolean
+
+  /**
+   * MarkdownIt options
+   */
+  markdown?: MarkdownOptions
   /**
    * Options to pass on to `@vitejs/plugin-vue`
    */
@@ -43,11 +52,6 @@ export interface UserConfig<ThemeConfig = any> {
    * Vite config
    */
   vite?: ViteConfig
-
-  srcDir?: string
-  srcExclude?: string[]
-  outDir?: string
-  shouldPreload?: (link: string, page: string) => boolean
 
   /**
    * Configure the scroll offset when the theme has a sticky header.
