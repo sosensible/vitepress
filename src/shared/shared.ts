@@ -1,4 +1,4 @@
-import { SiteData, PageData } from '../../types/shared'
+import { SiteData, PageData, HeadConfig } from '../../types/shared'
 
 export type {
   SiteData,
@@ -94,6 +94,20 @@ export function isExternal(path: string): boolean {
   return EXTERNAL_URL_RE.test(path)
 }
 
+function hasTag(head: HeadConfig[], tag: HeadConfig) {
+  const [tagType, tagAttrs] = tag
+  const keyAttr = Object.entries(tagAttrs)[0] // First key
+  if (keyAttr == null) return false
+  return head.some(
+    ([type, attrs]) => type === tagType && attrs[keyAttr[0]] === keyAttr[1]
+  )
+}
+
+function mergeHead(curr: HeadConfig[], prev: HeadConfig[]) {
+  const next = [...prev.filter((tagAttrs) => !hasTag(curr, tagAttrs)), ...curr]
+  return next
+}
+
 /**
  * this merges the locales data to the main data by the route
  */
@@ -118,10 +132,10 @@ export function resolveSiteDataByRoute(
     titleTemplate:
       siteData.locales[localeIndex].titleTemplate ?? siteData.titleTemplate,
     description:
-      siteData.locales[localeIndex].description ?? siteData.description
+      siteData.locales[localeIndex].description ?? siteData.description,
+    head: mergeHead(siteData.locales[localeIndex].head ?? [], siteData.head)
 
     // TODO: merge these:
-    // head?: HeadConfig[]
     // themeConfig?: ThemeConfig
   })
 }
