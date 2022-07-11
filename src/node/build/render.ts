@@ -4,7 +4,13 @@ import { pathToFileURL } from 'url'
 import escape from 'escape-html'
 import { normalizePath, transformWithEsbuild } from 'vite'
 import { RollupOutput, OutputChunk, OutputAsset } from 'rollup'
-import { HeadConfig, PageData, createTitle, notFoundPageData } from '../shared'
+import {
+  HeadConfig,
+  PageData,
+  createTitle,
+  notFoundPageData,
+  resolveSiteDataByRoute
+} from '../shared'
 import { slash } from '../utils/slash'
 import { SiteConfig } from '../config'
 
@@ -21,7 +27,7 @@ export async function renderPage(
   const { createApp } = await import(pathToFileURL(entryPath).toString())
   const { app, router } = createApp()
   const routePath = `/${page.replace(/\.md$/, '')}`
-  const siteData = config.site
+  const siteData = resolveSiteDataByRoute(config.site, routePath)
   await router.go(routePath)
 
   // render page

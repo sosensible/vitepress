@@ -1,7 +1,13 @@
 import { InjectionKey, Ref, shallowRef, readonly, computed, inject } from 'vue'
 import { Route } from './router'
 import siteData from '@siteData'
-import { PageData, SiteData, createTitle, DefaultTheme } from '../shared'
+import {
+  PageData,
+  SiteData,
+  createTitle,
+  DefaultTheme,
+  resolveSiteDataByRoute
+} from '../shared'
 
 export const dataSymbol: InjectionKey<VitePressData> = Symbol()
 
@@ -13,6 +19,7 @@ export interface VitePressData<T = any> {
   title: Ref<string>
   description: Ref<string>
   lang: Ref<string>
+  localeIndex: Ref<string>
 }
 
 // site data is a singleton
@@ -33,7 +40,9 @@ if (import.meta.hot) {
 
 // per-app data
 export function initData(route: Route): VitePressData {
-  const site = computed(() => siteDataRef.value)
+  const site = computed(() =>
+    resolveSiteDataByRoute(siteDataRef.value, route.data.relativePath)
+  )
 
   return {
     site,
@@ -46,7 +55,8 @@ export function initData(route: Route): VitePressData {
     }),
     description: computed(() => {
       return route.data.description || site.value.description
-    })
+    }),
+    localeIndex: computed(() => site.value.localeIndex || 'root')
   }
 }
 

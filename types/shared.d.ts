@@ -2,7 +2,7 @@
 
 import { DefaultTheme } from './default-theme'
 
-export { DefaultTheme }
+export { DefaultTheme } from './default-theme'
 
 export interface PageData {
   relativePath: string
@@ -37,6 +37,7 @@ export interface SiteData<ThemeConfig = any> {
   themeConfig: ThemeConfig
   scrollOffset: number | string
   locales: LocaleConfig<ThemeConfig>
+  localeIndex?: string
 }
 
 export type HeadConfig =
