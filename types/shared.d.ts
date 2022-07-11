@@ -60,5 +60,5 @@ export interface LocaleSpecificConfig<ThemeConfig = any> {
 
 export type LocaleConfig<ThemeConfig = any> = Record<
   string,
-  LocaleSpecificConfig<ThemeConfig> & { label: string }
+  LocaleSpecificConfig<ThemeConfig> & { label: string; link?: string }
 >

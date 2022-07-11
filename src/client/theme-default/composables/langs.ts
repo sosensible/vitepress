@@ -14,7 +14,12 @@ export function useLangs() {
         ? []
         : {
             text: value.label,
-            link: key === 'root' ? '/' : isExternal(key) ? key : `/${key}/`
+            link:
+              key === 'root'
+                ? '/'
+                : isExternal(key)
+                ? key
+                : value.link || `/${key}/`
           }
     )
   )
