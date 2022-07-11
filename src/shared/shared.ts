@@ -133,9 +133,8 @@ export function resolveSiteDataByRoute(
       siteData.locales[localeIndex].titleTemplate ?? siteData.titleTemplate,
     description:
       siteData.locales[localeIndex].description ?? siteData.description,
-    head: mergeHead(siteData.locales[localeIndex].head ?? [], siteData.head)
-
-    // TODO: merge these:
-    // themeConfig?: ThemeConfig
+    head: mergeHead(siteData.locales[localeIndex].head ?? [], siteData.head),
+    themeConfig:
+      siteData.locales[localeIndex].themeConfig ?? siteData.themeConfig
   })
 }
