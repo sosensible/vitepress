@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { useSidebar } from '../composables/sidebar'
+import { useLangs } from '../composables/langs'
+import { normalizeLink } from '../support/utils'
 import VPImage from './VPImage.vue'
 
 const { site, theme } = useData()
 const { hasSidebar } = useSidebar()
+const { currentLang } = useLangs()
 </script>
 
 <template>
   <div class="VPNavBarTitle" :class="{ 'has-sidebar': hasSidebar }">
-    <a class="title" :href="site.base">
+    <a class="title" :href="normalizeLink(currentLang.link)">
       <slot name="nav-bar-title-before" />
       <VPImage v-if="theme.logo" class="logo" :image="theme.logo" />
       <template v-if="theme.siteTitle">{{ theme.siteTitle }}</template>

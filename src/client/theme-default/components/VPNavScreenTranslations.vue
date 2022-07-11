@@ -20,7 +20,7 @@ function toggle() {
   >
     <button class="title" @click="toggle">
       <VPIconLanguages class="icon lang" />
-      {{ currentLang }}
+      {{ currentLang.label }}
       <VPIconChevronDown class="icon chevron" />
     </button>
 

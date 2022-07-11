@@ -14,7 +14,7 @@ const { localeLinks, currentLang } = useLangs()
     :icon="VPIconLanguages"
   >
     <div class="items">
-      <p class="title">{{ currentLang }}</p>
+      <p class="title">{{ currentLang.label }}</p>
 
       <template v-for="locale in localeLinks" :key="locale.link">
         <VPMenuLink :item="locale" />

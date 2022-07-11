@@ -4,13 +4,17 @@ import { isExternal } from '../support/utils'
 
 export function useLangs() {
   const { site, localeIndex } = useData()
-  const currentLang = computed(
-    () => site.value.locales[localeIndex.value].label
-  )
+  const currentLang = computed(() => ({
+    label: site.value.locales[localeIndex.value].label,
+    link:
+      localeIndex.value === 'root'
+        ? '/'
+        : site.value.locales[localeIndex.value].link || `/${localeIndex.value}/`
+  }))
 
   const localeLinks = computed(() =>
     Object.entries(site.value.locales).flatMap(([key, value]) =>
-      currentLang.value === value.label
+      currentLang.value.label === value.label
         ? []
         : {
             text: value.label,
