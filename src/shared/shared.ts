@@ -94,12 +94,14 @@ export function isExternal(path: string): boolean {
   return EXTERNAL_URL_RE.test(path)
 }
 
-// this merges the locales data to the main data by the route
+/**
+ * this merges the locales data to the main data by the route
+ */
 export function resolveSiteDataByRoute(
   siteData: SiteData,
   relativePath: string
 ): SiteData {
-  siteData.localeIndex =
+  const localeIndex =
     Object.keys(siteData.locales).find(
       (key) =>
         key !== 'root' &&
@@ -107,9 +109,19 @@ export function resolveSiteDataByRoute(
         isActive(relativePath, `/${key}/`, true)
     ) || 'root'
 
-  if (siteData.localeIndex === 'root') return siteData
+  if (localeIndex === 'root') return siteData
 
   return Object.assign({}, siteData, {
-    lang: siteData.locales[siteData.localeIndex].lang || 'en-US'
+    localeIndex,
+    lang: siteData.locales[localeIndex].lang ?? siteData.lang,
+    title: siteData.locales[localeIndex].title ?? siteData.title,
+    titleTemplate:
+      siteData.locales[localeIndex].titleTemplate ?? siteData.titleTemplate,
+    description:
+      siteData.locales[localeIndex].description ?? siteData.description
+
+    // TODO: merge these:
+    // head?: HeadConfig[]
+    // themeConfig?: ThemeConfig
   })
 }

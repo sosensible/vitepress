@@ -304,8 +304,8 @@ function resolveSiteDataHead(userConfig?: UserConfig): HeadConfig[] {
       `
         ;(() => {
           const saved = localStorage.getItem('${APPEARANCE_KEY}')
-          const prefereDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-          if (!saved || saved === 'auto' ? prefereDark : saved === 'dark') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (!saved || saved === 'auto' ? prefersDark : saved === 'dark') {
             document.documentElement.classList.add('dark')
           }
         })()
