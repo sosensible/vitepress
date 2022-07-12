@@ -5,7 +5,7 @@ import { isExternal } from '../support/utils'
 export function useLangs() {
   const { site, localeIndex } = useData()
   const currentLang = computed(() => ({
-    label: site.value.locales[localeIndex.value].label,
+    label: site.value.locales[localeIndex.value]?.label,
     link:
       localeIndex.value === 'root'
         ? '/'

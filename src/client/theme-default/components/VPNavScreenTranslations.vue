@@ -14,7 +14,7 @@ function toggle() {
 
 <template>
   <div
-    v-if="localeLinks.length"
+    v-if="localeLinks.length && currentLang.label"
     class="VPNavScreenTranslations"
     :class="{ open: isOpen }"
   >

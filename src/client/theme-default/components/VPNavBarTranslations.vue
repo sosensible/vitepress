@@ -9,7 +9,7 @@ const { localeLinks, currentLang } = useLangs()
 
 <template>
   <VPFlyout
-    v-if="localeLinks.length"
+    v-if="localeLinks.length && currentLang.label"
     class="VPNavBarTranslations"
     :icon="VPIconLanguages"
   >

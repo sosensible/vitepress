@@ -12,7 +12,7 @@ const { localeLinks, currentLang } = useLangs()
 
 <template>
   <VPFlyout class="VPNavBarExtra" label="extra navigation">
-    <div v-if="localeLinks.length" class="group">
+    <div v-if="localeLinks.length && currentLang.label" class="group">
       <p class="trans-title">{{ currentLang.label }}</p>
 
       <template v-for="locale in localeLinks" :key="locale.link">
