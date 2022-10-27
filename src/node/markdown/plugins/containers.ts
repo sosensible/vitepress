@@ -2,6 +2,7 @@ import MarkdownIt from 'markdown-it'
 import { RenderRule } from 'markdown-it/lib/renderer'
 import Token from 'markdown-it/lib/token'
 import container from 'markdown-it-container'
+import { nanoid } from 'nanoid'
 
 export const containerPlugin = (md: MarkdownIt) => {
   md.use(...createContainer('tip', 'TIP', md))
@@ -18,6 +19,7 @@ export const containerPlugin = (md: MarkdownIt) => {
       render: (tokens: Token[], idx: number) =>
         tokens[idx].nesting === 1 ? `<div class="vp-raw">\n` : `</div>\n`
     })
+    .use(...createCodeGroup())
 }
 
 type ContainerArgs = [typeof container, string, { render: RenderRule }]
@@ -43,6 +45,36 @@ function createContainer(
         } else {
           return klass === 'details' ? `</details>\n` : `</div>\n`
         }
+      }
+    }
+  ]
+}
+
+function createCodeGroup(): ContainerArgs {
+  return [
+    container,
+    'code-group',
+    {
+      render(tokens, idx) {
+        if (tokens[idx].nesting === 1) {
+          let first = true
+          const name = nanoid(6)
+          for (
+            let i = idx + 1;
+            !(
+              tokens[i].nesting === -1 &&
+              tokens[i].type === 'container_code-group_close'
+            );
+            ++i
+          ) {
+            if (tokens[i].type === 'fence' && tokens[i].tag === 'code') {
+              tokens[i].info += ` group ${name} ${nanoid(7)} ${first}`
+              first = false
+            }
+          }
+          return `<div class="code-group">\n`
+        }
+        return `</div>\n`
       }
     }
   ]

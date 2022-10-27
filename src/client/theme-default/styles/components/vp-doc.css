@@ -499,3 +499,72 @@
   margin: 0 !important;
   max-width: calc((100% - 24px) / 2) !important;
 }
+
+/**
+ * Code Groups
+ * -------------------------------------------------------------------------- */
+
+.vp-doc .code-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  margin-right: -24px;
+  margin-left: -24px;
+}
+
+.vp-doc .code-group input {
+  position: absolute;
+  opacity: 0;
+}
+
+.vp-doc .code-group label {
+  padding: 8px 12px;
+  cursor: pointer;
+  background: var(--vp-c-bg-soft);
+  transition: background-color 300ms;
+  border: 2px solid transparent;
+  font-weight: 500;
+}
+
+.vp-doc .code-group label:first-of-type {
+  /* padding-left: 16px; */
+  border-top-left-radius: 8px;
+}
+
+.vp-doc .code-group label:last-of-type {
+  /* padding-right: 16px; */
+  border-top-right-radius: 8px;
+}
+
+.vp-doc .code-group label:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.vp-doc .code-group > div[class*='language-'] {
+  display: none;
+  order: 99;
+  width: 100%;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  border-top-left-radius: 0;
+}
+
+.vp-doc .code-group input:checked + label {
+  background: var(--vp-c-bg-alt);
+}
+
+.vp-doc .code-group input:focus-visible + label {
+  border-color: var(--vp-c-divider);
+}
+
+.vp-doc .code-group input:checked + label + div {
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .vp-doc .code-group {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

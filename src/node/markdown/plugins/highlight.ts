@@ -19,8 +19,9 @@ import type { ThemeOptions } from '../markdown'
  *    [{ line: number, classes: string[] }]
  */
 const attrsToLines = (attrs: string): HtmlRendererOptions['lineOptions'] => {
+  attrs = attrs.replace(/^.*(true|false)/, '').trim()
   const result: number[] = []
-  if (!attrs.trim()) {
+  if (!attrs) {
     return []
   }
   attrs
@@ -75,7 +76,10 @@ export async function highlight(
 
   return (str: string, lang: string, attrs: string) => {
     const vPre = vueRE.test(lang) ? '' : 'v-pre'
-    lang = lang.replace(vueRE, '').toLowerCase()
+    lang = lang
+      .replace(vueRE, '')
+      .replace(/^group$/, '')
+      .toLowerCase()
 
     const lineOptions = attrsToLines(attrs)
     const cleanup = (str: string) =>
