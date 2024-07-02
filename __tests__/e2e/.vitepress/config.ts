@@ -4,7 +4,7 @@ const sidebar: DefaultTheme.Config['sidebar'] = {
   '/': [
     {
       text: 'Frontmatter',
-      collapsible: true,
+      collapsed: false,
       items: [
         {
           text: 'Multiple Levels Outline',
@@ -22,11 +22,11 @@ const sidebar: DefaultTheme.Config['sidebar'] = {
       ]
     },
     {
-      text: 'Static Data',
+      text: 'Data Loading',
       items: [
         {
           text: 'Test Page',
-          link: '/static-data/data'
+          link: '/data-loading/data'
         }
       ]
     },
@@ -36,6 +36,32 @@ const sidebar: DefaultTheme.Config['sidebar'] = {
         {
           text: 'Test Page',
           link: '/multi-sidebar/'
+        }
+      ]
+    },
+    {
+      text: 'Dynamic Routes',
+      items: [
+        {
+          text: 'Foo',
+          link: '/dynamic-routes/foo'
+        },
+        {
+          text: 'Bar',
+          link: '/dynamic-routes/bar'
+        }
+      ]
+    },
+    {
+      text: 'Markdown Extensions',
+      items: [
+        {
+          text: 'Test Page',
+          link: '/markdown-extensions/'
+        },
+        {
+          text: 'Foo',
+          link: '/markdown-extensions/foo'
         }
       ]
     }
@@ -60,7 +86,23 @@ const sidebar: DefaultTheme.Config['sidebar'] = {
 export default defineConfig({
   title: 'Example',
   description: 'An example app using VitePress.',
+  markdown: {
+    image: {
+      lazyLoading: true
+    }
+  },
   themeConfig: {
-    sidebar
+    sidebar,
+    search: {
+      provider: 'local',
+      options: {
+        _render(src, env, md) {
+          const html = md.render(src, env)
+          if (env.frontmatter?.search === false) return ''
+          if (env.relativePath.startsWith('local-search/excluded')) return ''
+          return html
+        }
+      }
+    }
   }
 })

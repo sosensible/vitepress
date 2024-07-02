@@ -1,18 +1,29 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-import { useNav } from '../composables/nav.js'
-import { useSidebar } from '../composables/sidebar.js'
+import { inBrowser } from 'vitepress'
+import { computed, provide, watchEffect } from 'vue'
+import { useData } from '../composables/data'
+import { useNav } from '../composables/nav'
 import VPNavBar from './VPNavBar.vue'
 import VPNavScreen from './VPNavScreen.vue'
 
 const { isScreenOpen, closeScreen, toggleScreen } = useNav()
-const { hasSidebar } = useSidebar()
+const { frontmatter } = useData()
+
+const hasNavbar = computed(() => {
+  return frontmatter.value.navbar !== false
+})
 
 provide('close-screen', closeScreen)
+
+watchEffect(() => {
+  if (inBrowser) {
+    document.documentElement.classList.toggle('hide-nav', !hasNavbar.value)
+  }
+})
 </script>
 
 <template>
-  <header class="VPNav" :class="{ 'no-sidebar' : !hasSidebar }">
+  <header v-if="hasNavbar" class="VPNav">
     <VPNavBar :is-screen-open="isScreenOpen" @toggle-screen="toggleScreen">
       <template #nav-bar-title-before><slot name="nav-bar-title-before" /></template>
       <template #nav-bar-title-after><slot name="nav-bar-title-after" /></template>
@@ -30,30 +41,17 @@ provide('close-screen', closeScreen)
 .VPNav {
   position: relative;
   top: var(--vp-layout-top-height, 0px);
+  /*rtl:ignore*/
   left: 0;
   z-index: var(--vp-z-index-nav);
   width: 100%;
   pointer-events: none;
+  transition: background-color 0.5s;
 }
 
 @media (min-width: 960px) {
   .VPNav {
     position: fixed;
-  }
-
-  .VPNav.no-sidebar {
-    background: var(--vp-c-bg-alpha-without-backdrop);
-  }
-
-  @supports (
-    (backdrop-filter: saturate(50%) blur(8px)) or
-      (-webkit-backdrop-filter: saturate(50%) blur(8px))
-  ) {
-    .VPNav.no-sidebar {
-      -webkit-backdrop-filter: saturate(50%) blur(8px);
-      backdrop-filter: saturate(50%) blur(8px);
-      background: var(--vp-c-bg-alpha-with-backdrop);
-    }
   }
 }
 </style>

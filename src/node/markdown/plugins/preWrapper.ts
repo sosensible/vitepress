@@ -1,22 +1,53 @@
-// markdown-it plugin for wrapping <pre> ... </pre>.
-//
-// If your plugin was chained before preWrapper, you can add additional element directly.
-// If your plugin was chained after preWrapper, you can use these slots:
-//   1. <!--beforebegin-->
-//   2. <!--afterbegin-->
-//   3. <!--beforeend-->
-//   4. <!--afterend-->
+import type MarkdownIt from 'markdown-it'
 
-import MarkdownIt from 'markdown-it'
+export interface Options {
+  codeCopyButtonTitle: string
+  hasSingleTheme: boolean
+}
 
-export const preWrapperPlugin = (md: MarkdownIt) => {
+export function preWrapperPlugin(md: MarkdownIt, options: Options) {
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (...args) => {
     const [tokens, idx] = args
-    const lang = tokens[idx].info.trim().replace(/-vue$/, '')
-    const rawCode = fence(...args)
-    return `<div class="language-${lang}"><button title="Copy Code" class="copy"></button><span class="lang">${
-      lang === 'vue-html' ? 'template' : lang
-    }</span>${rawCode}</div>`
+    const token = tokens[idx]
+
+    // remove title from info
+    token.info = token.info.replace(/\[.*\]/, '')
+
+    const active = / active( |$)/.test(token.info) ? ' active' : ''
+    token.info = token.info.replace(/ active$/, '').replace(/ active /, ' ')
+
+    const lang = extractLang(token.info)
+
+    return (
+      `<div class="language-${lang}${getAdaptiveThemeMarker(options)}${active}">` +
+      `<button title="${options.codeCopyButtonTitle}" class="copy"></button>` +
+      `<span class="lang">${lang}</span>` +
+      fence(...args) +
+      '</div>'
+    )
   }
+}
+
+export function getAdaptiveThemeMarker(options: Options) {
+  return options.hasSingleTheme ? '' : ' vp-adaptive-theme'
+}
+
+export function extractTitle(info: string, html = false) {
+  if (html) {
+    return (
+      info.replace(/<!--[^]*?-->/g, '').match(/data-title="(.*?)"/)?.[1] || ''
+    )
+  }
+  return info.match(/\[(.*)\]/)?.[1] || extractLang(info) || 'txt'
+}
+
+function extractLang(info: string) {
+  return info
+    .trim()
+    .replace(/=(\d*)/, '')
+    .replace(/:(no-)?line-numbers({| |$|=\d*).*/, '')
+    .replace(/(-vue|{| ).*$/, '')
+    .replace(/^vue-html$/, 'template')
+    .replace(/^ansi$/, '')
 }

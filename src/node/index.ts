@@ -1,14 +1,18 @@
-export * from './config'
-export * from './server'
-export * from './markdown'
+export { loadEnv, type Plugin } from 'vite'
 export * from './build/build'
+export * from './config'
+export * from './contentLoader'
+export * from './init/init'
+export * from './markdown/markdown'
+export { defineLoader, type LoaderModule } from './plugins/staticDataPlugin'
+export * from './postcss/isolateStyles'
 export * from './serve/serve'
+export * from './server'
 
 // shared types
 export type {
-  SiteData,
+  DefaultTheme,
   HeadConfig,
   Header,
-  LocaleConfig,
-  DefaultTheme
+  SiteData
 } from '../../types/shared'

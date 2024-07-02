@@ -1,34 +1,58 @@
+import siteData from '@siteData'
+import { useDark } from '@vueuse/core'
 import {
-  InjectionKey,
-  Ref,
   computed,
   inject,
   readonly,
   ref,
-  shallowRef
+  shallowRef,
+  watch,
+  type InjectionKey,
+  type Ref
 } from 'vue'
-import { Route } from './router.js'
-import siteData from '@siteData'
 import {
-  PageData,
-  SiteData,
+  APPEARANCE_KEY,
+  createTitle,
+  inBrowser,
   resolveSiteDataByRoute,
-  createTitle
-} from '../shared.js'
-import { withBase } from './utils.js'
+  type PageData,
+  type SiteData
+} from '../shared'
+import type { Route } from './router'
 
 export const dataSymbol: InjectionKey<VitePressData> = Symbol()
 
 export interface VitePressData<T = any> {
+  /**
+   * Site-level metadata
+   */
   site: Ref<SiteData<T>>
-  page: Ref<PageData>
+  /**
+   * themeConfig from .vitepress/config.js
+   */
   theme: Ref<T>
+  /**
+   * Page-level metadata
+   */
+  page: Ref<PageData>
+  /**
+   * page frontmatter data
+   */
   frontmatter: Ref<PageData['frontmatter']>
+  /**
+   * dynamic route params
+   */
+  params: Ref<PageData['params']>
   title: Ref<string>
   description: Ref<string>
   lang: Ref<string>
-  localePath: Ref<string>
+  dir: Ref<string>
+  localeIndex: Ref<string>
   isDark: Ref<boolean>
+  /**
+   * Current location hash
+   */
+  hash: Ref<string>
 }
 
 // site data is a singleton
@@ -48,7 +72,34 @@ if (import.meta.hot) {
 // per-app data
 export function initData(route: Route): VitePressData {
   const site = computed(() =>
-    resolveSiteDataByRoute(siteDataRef.value, route.path)
+    resolveSiteDataByRoute(siteDataRef.value, route.data.relativePath)
+  )
+
+  const appearance = site.value.appearance // fine with reactivity being lost here, config change triggers a restart
+  const isDark =
+    appearance === 'force-dark'
+      ? ref(true)
+      : appearance
+        ? useDark({
+            storageKey: APPEARANCE_KEY,
+            initialValue: () => (appearance === 'dark' ? 'dark' : 'auto'),
+            ...(typeof appearance === 'object' ? appearance : {})
+          })
+        : ref(false)
+
+  const hashRef = ref(inBrowser ? location.hash : '')
+
+  if (inBrowser) {
+    window.addEventListener('hashchange', () => {
+      hashRef.value = location.hash
+    })
+  }
+
+  watch(
+    () => route.data,
+    () => {
+      hashRef.value = inBrowser ? location.hash : ''
+    }
   )
 
   return {
@@ -56,21 +107,16 @@ export function initData(route: Route): VitePressData {
     theme: computed(() => site.value.themeConfig),
     page: computed(() => route.data),
     frontmatter: computed(() => route.data.frontmatter),
+    params: computed(() => route.data.params),
     lang: computed(() => site.value.lang),
-    localePath: computed(() => {
-      const { langs, lang } = site.value
-      const path = Object.keys(langs).find(
-        (langPath) => langs[langPath].lang === lang
-      )
-      return withBase(path || '/')
-    }),
-    title: computed(() => {
-      return createTitle(site.value, route.data)
-    }),
-    description: computed(() => {
-      return route.data.description || site.value.description
-    }),
-    isDark: ref(false)
+    dir: computed(() => route.data.frontmatter.dir || site.value.dir),
+    localeIndex: computed(() => site.value.localeIndex || 'root'),
+    title: computed(() => createTitle(site.value, route.data)),
+    description: computed(
+      () => route.data.description || site.value.description
+    ),
+    isDark,
+    hash: computed(() => hashRef.value)
   }
 }
 
